@@ -1,0 +1,33 @@
+{
+    "branch_labels": {
+        "CSE": 0,
+        "IT": 1,
+        "ECE": 2,
+        "CE": 3,
+        "ME": 4
+    },
+    "part_time_labels": {
+        "Yes": 1,
+        "No": 0
+    },
+    "family_income_labels": {
+        "Medium": 1,
+        "Low": 0,
+        "High": 2
+    },
+    "city_tier_labels": {
+        "Tier 1": 1,
+        "Tier 2": 2,
+        "Tier 3": 3
+    },
+    "internet_encoder": {
+        "Yes": 1,
+        "No": 0
+    },
+    "extra_encoder": {
+        "none": 0,
+        "Low": 1,
+        "Medium": 2,
+        "High": 3
+    }
+}
