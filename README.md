@@ -4,25 +4,142 @@ A machine learning project for predicting student placement outcomes and estimat
 
 ## Overview
 
-This project builds a two-stage placement prediction pipeline:
+This repository focuses on the **machine learning pipeline** behind student placement prediction.  
+The primary goal of the project is to preprocess the dataset, train predictive models, evaluate their performance, and package the final inference pipeline in a simple Streamlit interface for demonstration.
 
-1. **Placement Classifier** predicts whether a student is likely to be placed.
-2. **Salary Regressor** estimates the salary package in LPA for predicted placements.
+The app is included only as a **wrapper for display and interactive testing** of the trained models.
 
-The project includes:
+## Problem Statement
 
-- Data preprocessing and encoding
-- Deep learning classification and regression models
-- Exported inference artifacts
-- A Streamlit web app for interactive prediction
+The objective is to predict:
 
-## Features
+1. Whether a student is likely to get placed.
+2. The expected salary package in LPA for predicted placements.
 
-- Predicts placement probability
-- Predicts estimated salary in LPA
-- Uses saved encoder mappings and feature schema for inference consistency
-- Includes a Streamlit app for easy interaction
-- Contains training notebook, dataset, scalers, and trained Keras models
+This is handled as a two-stage ML task:
+
+- **Binary Classification** for placement prediction
+- **Regression** for salary estimation
+
+## Dataset
+
+The project uses student-related placement data with features such as:
+
+- Branch
+- CGPA
+- 10th percentage
+- 12th percentage
+- Backlogs
+- Study hours per day
+- Attendance percentage
+- Projects completed
+- Internships completed
+- Coding skill rating
+- Communication skill rating
+- Aptitude skill rating
+- Hackathons participated
+- Certifications count
+- Sleep hours
+- Stress level
+- Part-time job
+- Family income level
+- City tier
+- Internet access
+- Extracurricular involvement
+
+Target information is stored separately for placement outcome modeling.
+
+## ML Pipeline
+
+### 1. Data Preprocessing
+
+The preprocessing stage includes:
+
+- Feature selection
+- Categorical encoding
+- Numerical scaling
+- Target preparation
+- Exporting feature schema and encoder mappings for inference consistency
+
+Saved preprocessing artifacts:
+
+- `encoder_mappings.json`
+- `feature_columns.json`
+- `classifier_scaler.pkl`
+- `regressor_scaler.pkl`
+
+### 2. Classification Model
+
+The classifier predicts whether a student will be placed or not.
+
+Output:
+
+- `0` → Not Placed
+- `1` → Placed
+
+Saved model:
+
+- `placement_classifier.keras`
+
+### 3. Regression Model
+
+The regression model estimates salary in LPA using the encoded feature set along with predicted `placement_status`.
+
+Saved model:
+
+- `lpa_regressor.keras`
+
+## Evaluation and Analysis
+
+The repository includes multiple plots and evaluation visuals for understanding the dataset and model performance.
+
+### Data Visualizations
+
+#### Branch Distribution
+
+![Branch Distribution](images/branch_distribution.png)
+
+#### Initial Placement Distribution
+
+![Initial Placement Distribution](images/initial_placement_distribution.png)
+
+#### Placement Distribution After Processing
+
+![Placement Distribution After Processing](images/latter_placement_distribution.png)
+
+### Model Evaluation
+
+#### Final Confusion Matrix
+
+![Final Confusion Matrix](images/final_conf_matrix.png)
+
+#### Regressor Loss Plot
+
+![Regressor Loss Plot](images/regressor_loss_plot.png)
+
+#### Regressor True vs Predicted
+
+![Regressor True vs Predicted](images/regressor_true_pred.png)
+
+## Streamlit App
+
+A lightweight Streamlit app is included to wrap the trained ML pipeline and allow interactive testing of predictions.
+
+The app:
+
+- Takes raw student input
+- Encodes it using saved mappings
+- Aligns features using exported schema
+- Runs the classifier
+- Appends predicted placement status
+- Runs the regressor
+- Displays placement probability and salary estimate
+
+This app is meant only for **presentation and demonstration of the trained ML pipeline**, not as the main focus of the repository.
+
+### App Interface
+
+![Streamlit Interface](images/interface.png)
 
 ## Repository Structure
 
@@ -52,78 +169,6 @@ college_placements/
 └── README.md
 ```
 
-## Screenshots
-
-### Streamlit Interface
-
-![Streamlit Interface](images/interface.png)
-
-### Branch Distribution
-
-![Branch Distribution](images/branch_distribution.png)
-
-### Initial Placement Distribution
-
-![Initial Placement Distribution](images/initial_placement_distribution.png)
-
-### Placement Distribution After Processing
-
-![Placement Distribution After Processing](images/latter_placement_distribution.png)
-
-### Final Confusion Matrix
-
-![Final Confusion Matrix](images/final_conf_matrix.png)
-
-### Regressor Loss Plot
-
-![Regressor Loss Plot](images/regressor_loss_plot.png)
-
-### Regressor True vs Predicted
-
-![Regressor True vs Predicted](images/regressor_true_pred.png)
-
-## Machine Learning Pipeline
-
-### Classification Stage
-
-The classifier predicts whether a student will be placed based on features such as:
-
-- Branch
-- CGPA
-- 10th and 12th percentages
-- Backlogs
-- Study hours
-- Attendance
-- Projects
-- Internships
-- Coding, communication, and aptitude skill ratings
-- Hackathons
-- Certifications
-- Sleep hours
-- Stress level
-- Part-time job
-- Family income level
-- City tier
-- Internet access
-- Extracurricular involvement
-
-### Regression Stage
-
-The regressor uses the same encoded feature set, along with the predicted `placement_status`, to estimate salary in LPA.
-
-## App Workflow
-
-The Streamlit app follows this inference pipeline:
-
-- Raw user input
-- Encoding using saved mappings
-- Feature alignment using exported feature columns
-- Classification prediction
-- Append predicted placement status
-- Regression prediction for salary
-
-If placement is predicted as negative, the displayed salary is shown as `0.00 LPA`.
-
 ## How to Run
 
 ### 1. Clone the repository
@@ -139,18 +184,10 @@ cd college_placements
 pip install -r requirements.txt
 ```
 
-### 3. Run the Streamlit app
+### 3. Run the Streamlit wrapper
 
 ```bash
 streamlit run app_folder/app.py
-```
-
-## Deployment / Sharing
-
-To share the app temporarily from your machine using Cloudflare Tunnel:
-
-```bash
-cloudflared tunnel --url http://localhost:8501
 ```
 
 ## Tech Stack
@@ -162,20 +199,12 @@ cloudflared tunnel --url http://localhost:8501
 - TensorFlow / Keras
 - Streamlit
 - Joblib
-- JSON-based schema and encoder mappings
 
-## Future Improvements
+## Key Takeaway
 
-- Improve UI styling and responsiveness
-- Add model evaluation summary directly in the app
-- Add input validation and better error handling
-- Deploy permanently on a cloud platform
-- Add model explainability features
+This repository is primarily an **ML project** centered on preprocessing, model training, evaluation, and inference packaging.  
+The Streamlit app is included only as a simple interface to demonstrate the trained models in action.
 
 ## Author
 
 **Abhishek Pawar**
-
-## License
-
-This project is for educational and portfolio purposes.
