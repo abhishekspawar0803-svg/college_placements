@@ -47,6 +47,8 @@ college_placements/
 ├── indian_college_placements.ipynb
 ├── indian_engineering_student_placement.csv
 ├── placement_targets.csv
+├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
