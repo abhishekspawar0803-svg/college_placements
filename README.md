@@ -1,6 +1,6 @@
 # College Placements Predictor
 
-A machine learning project for predicting student placement outcomes and estimating salary packages using academic, skill-based, and background-related features.
+A two-stage machine learning project for predicting student placement outcomes with a balanced binary classifier and estimating salary packages through a follow-up regression model.
 
 ## Overview
 
@@ -90,6 +90,80 @@ Saved model:
 - `lpa_regressor.keras`
 
 ## Evaluation and Analysis
+
+### Dataset Summary
+
+The project uses a student placement dataset with **5,000 student records**. The feature table contains **22 columns** in total, and the classification/regression pipeline uses **21 input features** after separating the prediction targets.
+
+**Primary prediction tasks**
+
+1. **Placement prediction** — binary classification (`Placed` / `Not Placed`)
+2. **Salary estimation** — regression on `salarylpa`
+
+### Placement Class Distribution
+
+The original placement labels are strongly imbalanced:
+
+- **Placed:** 4,303
+- **Not Placed:** 697
+
+This means only **13.94%** of the original dataset belongs to the `Not Placed` class. To make classification training more balanced and fair, the notebook creates a reduced balanced dataset with:
+
+- **697 Placed**
+- **697 Not Placed**
+- **Total balanced samples:** **1,394**
+
+### Classification Model
+
+The placement classifier is a lightweight feedforward neural network trained on the balanced dataset.
+
+**Model architecture**
+
+- Input features: **21**
+- Dense layers: **64 → 32 → 16 → 1**
+- Activation: **ReLU** in hidden layers, **Sigmoid** in output layer
+- Dropout: **0.2** after each hidden layer
+- Total parameters: **4,033**
+
+### Classification Train/Test Split
+
+The balanced dataset is split as follows:
+
+- **Training samples:** 975
+- **Test samples:** 419
+
+### Placement Prediction Results
+
+**Neural network test performance**
+
+- Test accuracy: **0.7375**
+- Test loss: **0.6046**
+
+**Classification report**
+
+- **Not Placed:** precision **0.74**, recall **0.72**, F1-score **0.73**
+- **Placed:** precision **0.73**, recall **0.75**, F1-score **0.74**
+- **Overall accuracy:** **0.74**
+- **Macro average F1-score:** **0.74**
+- **Weighted average F1-score:** **0.74**
+
+These results show that the classifier performs in a fairly balanced way across both classes after resampling, instead of overfitting to the original majority `Placed` class.
+
+### Baseline Comparison
+
+The notebook also compares the neural classifier against a **Random Forest** baseline on the same balanced split.
+
+**Random Forest results**
+
+- Accuracy: **0.71**
+- Macro F1-score: **0.71**
+- Weighted F1-score: **0.71**
+
+This gives the neural classifier a modest but clear edge over the Random Forest baseline on the balanced classification setup.
+
+### Regression Pipeline
+
+For salary prediction, the notebook builds a second-stage regression pipeline using the same student feature set and explicitly includes **placement status** as an additional predictive variable. This design is reasonable because salary is directly linked to whether the student is placed.
 
 The repository includes multiple plots and evaluation visuals for understanding the dataset and model performance.
 
